@@ -6,8 +6,19 @@
 <div class="row">
     <div class="col-md">
         {% for object in objects_list %}
-            <p>{{object.name}}</p>
+            <p>
+                <a href="{% url 'cities:detail' pk=object.pk%}">{{object.name}}</a>  <!--детализация городов, можно перейти к ним и обратно на главную-->
+                </p>
         {% endfor %}
+    </div>
+</div>
+<!--<form action="https://www.google.com/search"> Реализация поиска через гугл-->
+<div class="row">
+    <div class="col-md-4">              <!--размер поля ввода, его формы-->
+        <form action="" method="post"> {% csrf_token %}
+        {{ form.as_p }}
+    <input type="submit" value="Submit">
+</form>
     </div>
 </div>
 {% endblock %}
