@@ -1,7 +1,10 @@
+from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 from django.core import paginator
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
+from django.utils import timezone
 from django.views.generic import DetailView, CreateView, UpdateView, DeleteView, ListView
 
 from cities.forms import HtmlForm, CityForm
@@ -40,18 +43,20 @@ class CityDetailView(DetailView):
     template_name = 'cities/detail.html'
 
 
-class CityCreateView(CreateView):
+class CityCreateView(SuccessMessageMixin, CreateView):
     model = City
     form_class = CityForm
     template_name = 'cities/create.html'
     success_url = reverse_lazy('cities:home')
+    success_message = "Город успешно создан"
 
 
-class CityUpdateView(UpdateView):
+class CityUpdateView(SuccessMessageMixin, UpdateView):
     model = City
     form_class = CityForm
     template_name = 'cities/update.html'
     success_url = reverse_lazy('cities:home')
+    success_message = "Город успешно отредактирован"
 
 
 class CityDeleteView(DeleteView):
@@ -59,11 +64,18 @@ class CityDeleteView(DeleteView):
     template_name = 'cities/delete.html'
     success_url = reverse_lazy('cities:home')
 
-    # def get(self, request, *args, **kwargs):      #Удаление сразу по ссылке без подтверждения
-    #   return self.post(request, *args, **kwargs)
+    def get_success_url(self):
+        messages.success(self.request, 'Город успешно удалён')
+        return reverse('cities:home')
 
 
 class CityListView(ListView):
     paginate_by = 2
     model = City
     template_name = 'cities/home.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        form = CityForm()
+        context['form'] = form
+        return context

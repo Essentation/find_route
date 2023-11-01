@@ -60,7 +60,7 @@
 <!--<form action="https://www.google.com/search"> Реализация поиска через гугл-->
 <div class="row">
     <div class="col-md-4">              <!--размер поля ввода, его формы-->
-        <form action="" method="post"> {% csrf_token %}
+        <form action="{% url 'cities:create' %}" method="post"> {% csrf_token %}
         {{ form.as_p }}
     <input type="submit" value="Submit">
 </form>
