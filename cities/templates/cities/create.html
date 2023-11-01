@@ -4,14 +4,7 @@
 {% block content %}
 <h1>Создание Города</h1>
 
+{% include 'form.html' with button='Сохранить' %}
 
-<div class="row">
-    <div class="col-md-4">              <!--размер поля ввода, его формы-->
-        <form action="" method="post"> {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Сохранить</button>
-</form>
-    </div>
-</div>
 {% endblock %}
 
